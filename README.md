@@ -9,8 +9,8 @@ For critical pieces of code that cannot overlap with one another, it is often ne
 
 If your application does not need a high performance mutex lock, Django DB Mutex does the trick. The common use case for Django DB Mutex is to provide the abilty to lock long-running periodic tasks that should not overlap with one another. Celery is the common backend for Django when scheduling periodic tasks.
 
-## How to Use Djagno DB Mutex
-The Djagno DB Mutex app provides a context manager and function decorator for locking a critical section of code. The context manager is used in the following way:
+## How to Use Django DB Mutex
+The Django DB Mutex app provides a context manager and function decorator for locking a critical section of code. The context manager is used in the following way:
 
         from db_mutex import db_mutex, DBMutexError, DBMutexTimeoutError
 
@@ -67,7 +67,7 @@ Django DB Mutex can be used with celery's tasks in the following manner.
             except DBMutexError:
                 # Ignore this task since the same one is already running
                 pass
-            except DBMutextTimeoutError:
+            except DBMutexTimeoutError:
                 # A task ran for a long time and another one may have overlapped with it. Report the error
                 pass
 
