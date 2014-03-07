@@ -72,10 +72,7 @@ class db_mutex(object):
         Returns a TTL for mutex locks. It defaults to 30 minutes. If the user specifies None
         as the TTL, locks never expire.
         """
-        if hasattr(settings, self.mutex_ttl_seconds_settings_key):
-            return getattr(settings, self.mutex_ttl_seconds_settings_key)
-        else:
-            return 30 * 60
+        return getattr(settings, self.mutex_ttl_seconds_settings_key, timedelta(minutes=30).total_seconds())
 
     def delete_expired_locks(self):
         """
