@@ -52,13 +52,17 @@ In order to change the duration of a lock, set the DB_MUTEX_TTL_SECONDS variable
 Django DB Mutex can be used with celery's tasks in the following manner.
 
     from celery import Task
+    from abc import ABCMeta, abstractmethod
 
     class NonOverlappingTask(Task):
+        __metaclass__ = ABCMeta
+
+        @abstractmethod
         def run_worker(self, *args, **kwargs):
             """
             Run worker code here.
             """
-            raise NotImplementedError()
+            pass
 
         def run(self, *args, **kwargs):
             try:
