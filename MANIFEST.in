@@ -1,0 +1,3 @@
+include db_mutex/VERSION
+include README.md
+include LICENSE
