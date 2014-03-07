@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/ambitioninc/django-db-mutex.png)](https://travis-ci.org/ambitioninc/django-db-mutex)
 django-db-mutex
-=====================
+===============
 
 Provides the ability to acquire a mutex lock from the database in Django.
 
