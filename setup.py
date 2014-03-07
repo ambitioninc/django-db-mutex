@@ -20,7 +20,7 @@ setup(
         'Framework :: Django',
     ],
     install_requires=[
-        'django>=1.4',
+        'django>=1.6',
     ],
     include_package_data=True,
 )
