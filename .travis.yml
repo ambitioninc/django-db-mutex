@@ -11,5 +11,5 @@ before_script:
   - find . | grep .py$ | grep -v /migrations | grep -v __init__.py | xargs pyflakes
   - psql -c 'CREATE DATABASE db_mutex;' -U postgres
 script:
-  - coverage run --source='db_mutex' --branch manage.py test
+  - coverage run --source='db_mutex' --branch --omit 'db_mutex/migrations/*' manage.py test
   - coverage report --fail-under=100
