@@ -11,7 +11,7 @@ setup(
     author='Wes Kendall',
     author_email='wesleykendall@gmail.com',
     packages=[
-        'manager_utils',
+        'db_mutex',
     ],
     classifiers=[
         'Programming Language :: Python',
