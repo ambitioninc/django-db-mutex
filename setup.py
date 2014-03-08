@@ -12,6 +12,7 @@ setup(
     author_email='wesleykendall@gmail.com',
     packages=[
         'db_mutex',
+        'db_mutex.migrations',
     ],
     classifiers=[
         'Programming Language :: Python',
