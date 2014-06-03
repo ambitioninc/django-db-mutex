@@ -24,4 +24,5 @@ setup(
         'django>=1.6',
     ],
     include_package_data=True,
+    zip_safe=False,
 )
