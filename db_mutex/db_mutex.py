@@ -5,65 +5,56 @@ from django.conf import settings
 from django.db import transaction, IntegrityError
 
 from .models import DBMutex
-
-
-class DBMutexError(Exception):
-    """
-    Thrown when a lock cannot be acquired.
-    """
-    pass
-
-
-class DBMutexTimeoutError(Exception):
-    """
-    Thrown when a lock times out before it is released.
-    """
-    pass
+from .exceptions import DBMutexError, DBMutexTimeoutError
 
 
 class db_mutex(object):
     """
     An object that acts as a context manager and a function decorator for acquiring a
     DB mutex lock.
-
-    Args:
-        lock_id: The ID of the lock one is trying to acquire
-
-    Raises:
-        DBMutexError when the lock cannot be obtained
-        DBMutexTimeoutError when the lock was deleted during execution
-
-    Examples:
-        This context manager/function decorator can be used in the following way
-
-        from db_mutex import db_mutex
-
-        # Lock a critical section of code
-        try:
-            with db_mutex('lock_id'):
-                # Run critical code here
-                pass
-        except DBMutexError:
-            print 'Could not obtain lock'
-        except DBMutexTimeoutError:
-            print 'Task completed but the lock timed out'
-
-        # Lock a function
-        @db_mutex('lock_id'):
-        def critical_function():
-            # Critical code goes here
-            pass
-
-        try:
-            critical_function()
-        except DBMutexError:
-            print 'Could not obtain lock'
-        except DBMutexTimeoutError:
-            print 'Task completed but the lock timed out'
     """
     mutex_ttl_seconds_settings_key = 'DB_MUTEX_TTL_SECONDS'
 
     def __init__(self, lock_id):
+        """
+        This context manager/function decorator can be used in the following way
+
+        .. code-block:: python
+
+            from db_mutex import db_mutex
+
+            # Lock a critical section of code
+            try:
+                with db_mutex('lock_id'):
+                    # Run critical code here
+                    pass
+            except DBMutexError:
+                print('Could not obtain lock')
+            except DBMutexTimeoutError:
+                print('Task completed but the lock timed out')
+
+            # Lock a function
+            @db_mutex('lock_id'):
+            def critical_function():
+                # Critical code goes here
+                pass
+
+            try:
+                critical_function()
+            except DBMutexError:
+                print('Could not obtain lock')
+            except DBMutexTimeoutError:
+                print('Task completed but the lock timed out')
+
+
+        :type lock_id: str
+        :param lock_id: The ID of the lock one is trying to acquire
+
+        :raises:
+            DBMutexError when the lock cannot be obtained
+            DBMutexTimeoutError when the lock was deleted during execution
+
+        """
         self.lock_id = lock_id
         self.lock = None
 
@@ -71,6 +62,9 @@ class db_mutex(object):
         """
         Returns a TTL for mutex locks. It defaults to 30 minutes. If the user specifies None
         as the TTL, locks never expire.
+
+        :rtype: int
+        :returns: the mutex's ttl in seconds
         """
         return getattr(settings, self.mutex_ttl_seconds_settings_key, timedelta(minutes=30).total_seconds())
 
