@@ -17,3 +17,10 @@ DBMutex Model
 
 .. autoclass:: db_mutex.models.DBMutex
     :members:
+
+Exceptions
+----------
+
+.. automodule:: db_mutex.exceptions
+.. autoclass:: db_mutex.exceptions.DBMutexError
+.. autoclass:: db_mutex.exceptions.DBMutexTimeoutError
