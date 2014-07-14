@@ -2,7 +2,6 @@
 branch = True
 omit =
     db_mutex/migrations/*
-    db_mutex/tests/*
     db_mutex/version.py
 source = db_mutex
 [report]
