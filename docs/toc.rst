@@ -7,7 +7,6 @@ Table of Contents
    index
    installation
    examples
-   ref/db_mutex
-   ref/models
+   ref/code
    contributing
    release_notes

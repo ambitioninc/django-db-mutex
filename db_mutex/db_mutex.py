@@ -51,8 +51,9 @@ class db_mutex(object):
         :param lock_id: The ID of the lock one is trying to acquire
 
         :raises:
-            DBMutexError when the lock cannot be obtained
-            DBMutexTimeoutError when the lock was deleted during execution
+            * :class:`DBMutexError <db_mutex.exceptions.DBMutexError>` when the lock cannot be obtained
+            * :class:`DBMutexTimeoutError <db_mutex.exceptions.DBMutexTimeoutError>` when the
+              lock was deleted during execution
 
         """
         self.lock_id = lock_id
