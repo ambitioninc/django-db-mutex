@@ -1,16 +1,19 @@
 language: python
 python:
   - '2.7'
+  - '3.3'
+  - '3.4'
 env:
-  - DJANGO=1.6.1 DB=postgres
+  global:
+    - DB=postgres
+  matrix:
+    - DJANGO=1.6.5
 install:
+  - pip install -q coverage flake8 Django==$DJANGO django-nose
   - python setup.py install
-  - pip install -q Django==$DJANGO
-  - pip install -r requirements.txt
 before_script:
-  - find . | grep .py$ | grep -v /migrations | xargs pep8 --max-line-length=120
-  - find . | grep .py$ | grep -v /migrations | grep -v __init__.py | xargs pyflakes
   - psql -c 'CREATE DATABASE db_mutex;' -U postgres
 script:
-  - coverage run --source='db_mutex' --branch --omit 'db_mutex/migrations/*' manage.py test
-  - coverage report --fail-under=100
+  - flake8 .
+  - coverage run setup.py test
+  - coverage report --fail-under 100
