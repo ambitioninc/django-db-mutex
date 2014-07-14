@@ -36,7 +36,7 @@ class ContextManagerTestCase(TestCase):
         # Try to acquire the lock. It should raise an exception
         with self.assertRaises(DBMutexError):
             with db_mutex('lock_id'):
-                pass
+                raise NotImplementedError
         # The lock should still exist
         self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
 
@@ -68,13 +68,13 @@ class ContextManagerTestCase(TestCase):
         with freeze_time('2014-02-01 00:01:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 9 minutes in the future. It should fail
         with freeze_time('2014-02-01 00:09:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 30 minutes in the future. It should pass since the lock timed out
         with freeze_time('2014-02-01 00:30:00'):
@@ -97,25 +97,25 @@ class ContextManagerTestCase(TestCase):
         with freeze_time('2014-02-01 00:01:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 9 minutes in the future. It should fail
         with freeze_time('2014-02-01 00:09:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 30 minutes in the future. It should fail
         with freeze_time('2014-02-01 00:30:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock years in the future. It should fail
         with freeze_time('2016-02-01 00:30:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
     @override_settings(DB_MUTEX_TTL_SECONDS=60 * 60)
     def test_custom_lock_timeout(self):
@@ -130,13 +130,13 @@ class ContextManagerTestCase(TestCase):
         with freeze_time('2014-02-01 00:01:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 31 minutes in the future. It should fail
         with freeze_time('2014-02-01 00:31:00'):
             with self.assertRaises(DBMutexError):
                 with db_mutex('lock_id'):
-                    pass
+                    raise NotImplementedError
 
         # Try to acquire the lock 60 minutes in the future. It should pass
         with freeze_time('2014-02-01 01:00:00'):
@@ -194,7 +194,7 @@ class FunctionDecoratorTestCase(TestCase):
 
         @db_mutex('lock_id')
         def run_get_lock():
-            pass
+            raise NotImplementedError
 
         # Try to acquire the lock. It should raise an exception
         with self.assertRaises(DBMutexError):
@@ -235,7 +235,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:01:00')
         @db_mutex('lock_id')
         def run_get_lock1():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock1()
@@ -244,7 +244,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:09:00')
         @db_mutex('lock_id')
         def run_get_lock2():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock2()
@@ -273,7 +273,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:01:00')
         @db_mutex('lock_id')
         def run_get_lock1():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock1()
@@ -282,7 +282,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:09:00')
         @db_mutex('lock_id')
         def run_get_lock2():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock2()
@@ -291,7 +291,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:30:00')
         @db_mutex('lock_id')
         def run_get_lock3():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock3()
@@ -300,7 +300,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2016-02-01 00:30:00')
         @db_mutex('lock_id')
         def run_get_lock4():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock4()
@@ -318,7 +318,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:01:00')
         @db_mutex('lock_id')
         def run_get_lock1():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock1()
@@ -327,7 +327,7 @@ class FunctionDecoratorTestCase(TestCase):
         @freeze_time('2014-02-01 00:31:00')
         @db_mutex('lock_id')
         def run_get_lock2():
-            pass
+            raise NotImplementedError
 
         with self.assertRaises(DBMutexError):
             run_get_lock2()
