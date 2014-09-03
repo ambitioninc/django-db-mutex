@@ -1,11 +1,15 @@
 from datetime import datetime, timedelta
 import functools
+import logging
 
 from django.conf import settings
 from django.db import transaction, IntegrityError
 
-from .models import DBMutex
 from .exceptions import DBMutexError, DBMutexTimeoutError
+from .models import DBMutex
+
+
+LOG = logging.getLogger(__name__)
 
 
 class db_mutex(object):
@@ -15,7 +19,7 @@ class db_mutex(object):
     """
     mutex_ttl_seconds_settings_key = 'DB_MUTEX_TTL_SECONDS'
 
-    def __init__(self, lock_id):
+    def __init__(self, lock_id, suppress_acquisition_exceptions=False):
         """
         This context manager/function decorator can be used in the following way
 
@@ -46,9 +50,11 @@ class db_mutex(object):
             except DBMutexTimeoutError:
                 print('Task completed but the lock timed out')
 
-
         :type lock_id: str
         :param lock_id: The ID of the lock one is trying to acquire
+        :type suppress_acquisition_exceptions: bool
+        :param suppress_acquisition_exceptions: Suppress exceptions when acquiring the lock and instead
+            log an error message.
 
         :raises:
             * :class:`DBMutexError <db_mutex.exceptions.DBMutexError>` when the lock cannot be obtained
@@ -58,6 +64,7 @@ class db_mutex(object):
         """
         self.lock_id = lock_id
         self.lock = None
+        self.suppress_acquisition_exceptions = suppress_acquisition_exceptions
 
     def get_mutex_ttl_seconds(self):
         """
@@ -97,16 +104,20 @@ class db_mutex(object):
             with transaction.atomic():
                 self.lock = DBMutex.objects.create(lock_id=self.lock_id)
         except IntegrityError:
-            raise DBMutexError('Could not acquire lock: {0}'.format(self.lock_id))
+            if self.suppress_acquisition_exceptions:
+                LOG.error('Could not acquire lock: {0}'.format(self.lock_id))
+            else:
+                raise DBMutexError('Could not acquire lock: {0}'.format(self.lock_id))
 
     def stop(self):
         """
         Releases the db mutex lock. Throws an error if the lock was released before the function finished.
         """
-        if not DBMutex.objects.filter(id=self.lock.id).exists():
-            raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
-        else:
-            self.lock.delete()
+        if self.lock:
+            if not DBMutex.objects.filter(id=self.lock.id).exists():
+                raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
+            else:
+                self.lock.delete()
 
     def decorate_callable(self, func):
         """
