@@ -41,10 +41,7 @@ setup(
     ],
     license='MIT',
     install_requires=[
-<<<<<<< HEAD
         'django>=1.6,<1.7',
-=======
-        'django>=1.6',
         'south>=0.7.6',
     ],
     tests_require=[
@@ -54,7 +51,6 @@ setup(
         'coverage>=3.7.1',
         'freezegun>=0.1.13',
         'django-dynamic-fixture>=1.6.5'
->>>>>>> 431e7c86bb349478af0eceb5fd93d597728f9452
     ],
     test_suite='run_tests.run_tests',
     include_package_data=True,
