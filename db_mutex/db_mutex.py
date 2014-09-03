@@ -54,7 +54,8 @@ class db_mutex(object):
         :param lock_id: The ID of the lock one is trying to acquire
         :type suppress_acquisition_exceptions: bool
         :param suppress_acquisition_exceptions: Suppress exceptions when acquiring the lock and instead
-            log an error message.
+            log an error message. Note that this is only applicable when using this as a decorator and
+            not a context manager.
 
         :raises:
             * :class:`DBMutexError <db_mutex.exceptions.DBMutexError>` when the lock cannot be obtained
@@ -104,20 +105,16 @@ class db_mutex(object):
             with transaction.atomic():
                 self.lock = DBMutex.objects.create(lock_id=self.lock_id)
         except IntegrityError:
-            if self.suppress_acquisition_exceptions:
-                LOG.error('Could not acquire lock: {0}'.format(self.lock_id))
-            else:
-                raise DBMutexError('Could not acquire lock: {0}'.format(self.lock_id))
+            raise DBMutexError('Could not acquire lock: {0}'.format(self.lock_id))
 
     def stop(self):
         """
         Releases the db mutex lock. Throws an error if the lock was released before the function finished.
         """
-        if self.lock:
-            if not DBMutex.objects.filter(id=self.lock.id).exists():
-                raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
-            else:
-                self.lock.delete()
+        if not DBMutex.objects.filter(id=self.lock.id).exists():
+            raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
+        else:
+            self.lock.delete()
 
     def decorate_callable(self, func):
         """
@@ -125,8 +122,14 @@ class db_mutex(object):
         it.
         """
         def wrapper(*args, **kwargs):
-            with self:
-                result = func(*args, **kwargs)
-            return result
+            try:
+                with self:
+                    result = func(*args, **kwargs)
+                return result
+            except DBMutexError as e:
+                if self.suppress_acquisition_exceptions:
+                    LOG.error(e)
+                else:
+                    raise e
         functools.update_wrapper(wrapper, func)
         return wrapper
