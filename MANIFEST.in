@@ -1,3 +1,2 @@
-include db_mutex/VERSION
-include README.md
+include README.rst
 include LICENSE
