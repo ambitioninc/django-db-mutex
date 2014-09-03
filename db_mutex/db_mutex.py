@@ -5,28 +5,11 @@ import logging
 from django.conf import settings
 from django.db import transaction, IntegrityError
 
+from .exceptions import DBMutexError, DBMutexTimeoutError
 from .models import DBMutex
-<<<<<<< HEAD
 
 
 LOG = logging.getLogger(__name__)
-
-
-class DBMutexError(Exception):
-    """
-    Thrown when a lock cannot be acquired.
-    """
-    pass
-
-
-class DBMutexTimeoutError(Exception):
-    """
-    Thrown when a lock times out before it is released.
-    """
-    pass
-=======
-from .exceptions import DBMutexError, DBMutexTimeoutError
->>>>>>> 431e7c86bb349478af0eceb5fd93d597728f9452
 
 
 class db_mutex(object):
@@ -36,7 +19,7 @@ class db_mutex(object):
     """
     mutex_ttl_seconds_settings_key = 'DB_MUTEX_TTL_SECONDS'
 
-    def __init__(self, lock_id):
+    def __init__(self, lock_id, suppress_acquisition_exceptions=False):
         """
         This context manager/function decorator can be used in the following way
 
@@ -67,12 +50,11 @@ class db_mutex(object):
             except DBMutexTimeoutError:
                 print('Task completed but the lock timed out')
 
-
-<<<<<<< HEAD
-    def __init__(self, lock_id, suppress_acquisition_exceptions=False):
-=======
         :type lock_id: str
         :param lock_id: The ID of the lock one is trying to acquire
+        :type suppress_acquisition_exceptions: bool
+        :param suppress_acquisition_exceptions: Suppress exceptions when acquiring the lock and instead
+            log an error message.
 
         :raises:
             * :class:`DBMutexError <db_mutex.exceptions.DBMutexError>` when the lock cannot be obtained
@@ -80,7 +62,6 @@ class db_mutex(object):
               lock was deleted during execution
 
         """
->>>>>>> 431e7c86bb349478af0eceb5fd93d597728f9452
         self.lock_id = lock_id
         self.lock = None
         self.suppress_acquisition_exceptions = suppress_acquisition_exceptions
