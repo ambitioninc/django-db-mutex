@@ -39,6 +39,20 @@ class ContextManagerTestCase(TestCase):
         self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
 
     @freeze_time('2014-02-01')
+    def test_lock_before_suppress_acquisition_errors(self):
+        """
+        Tests when a lock already exists. Verifies that no exception is thrown when
+        suppress_acquisition_errors is True.
+        """
+        # Create a lock
+        m = DBMutex.objects.create(lock_id='lock_id')
+        # Try to acquire the lock. It should neither acquire nor release it
+        with db_mutex('lock_id', suppress_acquisition_exceptions=True):
+            pass
+        # The lock should still exist
+        self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
+
+    @freeze_time('2014-02-01')
     def test_lock_different_id(self):
         """
         Tests that the lock still works even when another lock with a different id exists.
