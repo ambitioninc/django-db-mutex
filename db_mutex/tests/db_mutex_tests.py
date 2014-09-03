@@ -43,14 +43,16 @@ class ContextManagerTestCase(TestCase):
     @freeze_time('2014-02-01')
     def test_lock_before_suppress_acquisition_errors(self):
         """
-        Tests when a lock already exists. Verifies that no exception is thrown when
-        suppress_acquisition_errors is True.
+        Tests when a lock already exists. Verifies that an exception is thrown when
+        suppress_acquisition_errors is True. The exception is still thrown because
+        we are using it as a context manager
         """
         # Create a lock
         m = DBMutex.objects.create(lock_id='lock_id')
         # Try to acquire the lock. It should neither acquire nor release it
-        with db_mutex('lock_id', suppress_acquisition_exceptions=True):
-            pass
+        with self.assertRaises(DBMutexError):
+            with db_mutex('lock_id', suppress_acquisition_exceptions=True):
+                raise NotImplementedError
         # The lock should still exist
         self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
 
@@ -213,6 +215,25 @@ class FunctionDecoratorTestCase(TestCase):
         # Try to acquire the lock. It should raise an exception
         with self.assertRaises(DBMutexError):
             run_get_lock()
+
+        # The lock should still exist
+        self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
+
+    @freeze_time('2014-02-01')
+    def test_lock_before_suppress_acquisition_exceptions(self):
+        """
+        Tests when a lock already exists. Note that it should not raise an exception since
+        suppress_acquisition_exceptions is True.
+        """
+        # Create a lock
+        m = DBMutex.objects.create(lock_id='lock_id')
+
+        @db_mutex('lock_id', suppress_acquisition_exceptions=True)
+        def run_get_lock():
+            raise NotImplementedError
+
+        # Try to acquire the lock. It should not raise an exception nor acquire the lock
+        run_get_lock()
 
         # The lock should still exist
         self.assertTrue(DBMutex.objects.filter(id=m.id).exists())
