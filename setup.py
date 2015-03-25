@@ -32,7 +32,6 @@ setup(
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
@@ -41,8 +40,8 @@ setup(
     ],
     license='MIT',
     install_requires=[
-        'django>=1.6,<1.7',
-        'south>=0.7.6',
+        'django>=1.6',
+        'south>=1.0.2',
     ],
     tests_require=[
         'psycopg2>=2.4.5',
