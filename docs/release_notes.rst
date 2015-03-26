@@ -1,6 +1,15 @@
 Release Notes
 =============
 
+v0.1.8
+------
+* Fixed migrations to include south_migrations
+
+v0.1.7
+------
+
+* Fixed upload to pypi
+
 v0.1.6
 ------
 

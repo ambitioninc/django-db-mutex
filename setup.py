@@ -2,7 +2,7 @@
 import multiprocessing
 assert multiprocessing
 import re
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def get_version():
@@ -25,10 +25,7 @@ setup(
     url='http://github.com/ambitioninc/django-db-mutex/',
     author='Wes Kendall',
     author_email='opensource@ambition.com',
-    packages=[
-        'db_mutex',
-        'db_mutex.migrations',
-    ],
+    packages=find_packages(),
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.7',
