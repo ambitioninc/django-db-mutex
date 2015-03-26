@@ -28,6 +28,7 @@ setup(
     packages=[
         'db_mutex',
         'db_mutex.migrations',
+        'db_mutex.south_migrations',
     ],
     classifiers=[
         'Programming Language :: Python',
