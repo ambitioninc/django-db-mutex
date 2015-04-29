@@ -7,10 +7,10 @@ env:
   global:
     - DB=postgres
   matrix:
-    - DJANGO=1.6.11
-    - DJANGO=1.7.7
+    - DJANGO=">=1.7,<1.8"
+    - DJANGO=">=1.8,<1.9"
 install:
-  - pip install -q coverage flake8 Django==$DJANGO django-nose
+  - pip install -q coverage flake8 Django$DJANGO django-nose>=1.4
   - python setup.py install
 before_script:
   - psql -c 'CREATE DATABASE db_mutex;' -U postgres
