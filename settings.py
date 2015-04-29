@@ -32,24 +32,20 @@ def configure_settings():
         else:
             raise RuntimeError('Unsupported test DB {0}'.format(test_db))
 
-        installed_apps = (
-            'django.contrib.auth',
-            'django.contrib.contenttypes',
-            'django.contrib.sessions',
-            'django.contrib.admin',
-            'db_mutex',
-            'db_mutex.tests',
-            'django_nose',
-        )
-        import django
-        if django.VERSION[1] < 7:
-            installed_apps += 'south',
         settings.configure(
             MIDDLEWARE_CLASSES=(),
             DATABASES={
                 'default': db_config,
             },
-            INSTALLED_APPS=installed_apps,
+            INSTALLED_APPS=(
+                'django.contrib.auth',
+                'django.contrib.contenttypes',
+                'django.contrib.sessions',
+                'django.contrib.admin',
+                'db_mutex',
+                'db_mutex.tests',
+                'django_nose',
+            ),
             DEBUG=False,
             TEST_RUNNER = 'django_nose.NoseTestSuiteRunner',
             CACHES = {
