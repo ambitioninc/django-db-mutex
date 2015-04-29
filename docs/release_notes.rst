@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+v0.2.0
+------
+* Dropped Django 1.6, added 1.8 support
+
 v0.1.8
 ------
 * Fixed migrations to include south_migrations
