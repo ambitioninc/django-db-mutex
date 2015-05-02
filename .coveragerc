@@ -3,7 +3,6 @@ branch = True
 omit =
     db_mutex/migrations/*
     db_mutex/version.py
-    db_mutex/apps.py
 source = db_mutex
 [report]
 exclude_lines =
