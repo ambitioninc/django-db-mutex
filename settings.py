@@ -49,7 +49,6 @@ def configure_settings():
                 'django_nose',
             ),
             DEBUG=False,
-            TEST_RUNNER = 'django_nose.NoseTestSuiteRunner',
             CACHES = {
                 'default': {
                     'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
