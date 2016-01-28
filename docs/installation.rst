@@ -6,8 +6,8 @@ Installation
     # Using pip
     pip install django-db-mutex
     
-    # Or, using pip (from the latest source code)
-    pip install git+git://github.com/ambitioninc/django-db-mutex.git
+    # Or, using pip (from source, in editable form)
+    pip install -e git://github.com/ambitioninc/django-db-mutex.git#egg=django-db-mutex
 
 * Add ``'db_mutex'`` to your ``INSTALLED_APPS`` setting::
 
