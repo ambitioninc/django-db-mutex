@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import functools
 import logging
 
 from django.conf import settings
 from django.db import transaction, IntegrityError
+from django.utils import timezone
 
 from .exceptions import DBMutexError, DBMutexTimeoutError
 from .models import DBMutex
@@ -83,7 +84,7 @@ class db_mutex(object):
         """
         ttl_seconds = self.get_mutex_ttl_seconds()
         if ttl_seconds is not None:
-            DBMutex.objects.filter(creation_time__lte=datetime.utcnow() - timedelta(seconds=ttl_seconds)).delete()
+            DBMutex.objects.filter(creation_time__lte=timezone.now() - timedelta(seconds=ttl_seconds)).delete()
 
     def __call__(self, func):
         return self.decorate_callable(func)
