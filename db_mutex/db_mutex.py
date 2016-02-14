@@ -4,7 +4,9 @@ import logging
 
 from django.conf import settings
 from django.db import transaction, IntegrityError
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils import timezone
+ 
 from .exceptions import DBMutexError, DBMutexTimeoutError
 from .models import DBMutex
 
@@ -91,8 +93,8 @@ class db_mutex(object):
     def __enter__(self):
         self.start()
 
-    def __exit__(self, *args):
-        self.stop()
+    def __exit__(self, type, value, traceback):
+        return self.stop(type, value, traceback)
 
     def start(self):
         """
@@ -107,14 +109,23 @@ class db_mutex(object):
         except IntegrityError:
             raise DBMutexError('Could not acquire lock: {0}'.format(self.lock_id))
 
-    def stop(self):
+    def stop(self, type, value, traceback):
         """
         Releases the db mutex lock. Throws an error if the lock was released before the function finished.
         """
-        if not DBMutex.objects.filter(id=self.lock.id).exists():
-            raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
-        else:
+        ttl_seconds = self.get_mutex_ttl_seconds()
+        
+        try : 
+            dbmutex = DBMutex.objects.get(id=self.lock.id)
             self.lock.delete()
+        except ObjectDoesNotExist: 
+            dbmutex = None
+            
+        if value :
+            return #Any exception takes precedence over DBMutexTimeoutError
+        
+        if not dbmutex or (ttl_seconds and dbmutex.creation_time <= timezone.now() - timedelta(seconds=ttl_seconds)):
+            raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
 
     def decorate_callable(self, func):
         """
