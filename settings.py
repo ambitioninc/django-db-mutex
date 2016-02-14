@@ -49,7 +49,7 @@ def configure_settings():
                 'django_nose',
             ),
             DEBUG=False,
-            CACHES = {
+            CACHES={
                 'default': {
                     'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
                     'LOCATION': 'unique-snowflake'
