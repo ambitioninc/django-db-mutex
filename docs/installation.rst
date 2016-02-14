@@ -1,10 +1,17 @@
 Installation
 ============
 
-To install the latest release, type::
-
+* Install Django-db-mutex with your favorite Python package manager::
+    
+    # Using pip
     pip install django-db-mutex
+    
+    # Or, using pip (from source, in editable form)
+    pip install -e git://github.com/ambitioninc/django-db-mutex.git#egg=django-db-mutex
 
-To install the latest code directly from source, type::
+* Add ``'db_mutex'`` to your ``INSTALLED_APPS`` setting::
 
-    pip install git+git://github.com/ambitioninc/django-db-mutex.git
+    INSTALLED_APPS = (
+        # other apps
+        'db_mutex',
+    )
