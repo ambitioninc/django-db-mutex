@@ -1,6 +1,3 @@
-"""
-Provides the ability to run test on a standalone Django app.
-"""
 import sys
 from optparse import OptionParser
 
