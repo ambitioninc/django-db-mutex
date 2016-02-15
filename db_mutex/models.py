@@ -13,3 +13,6 @@ class DBMutex(models.Model):
     """
     lock_id = models.CharField(max_length=256, unique=True)
     creation_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        app_label = 'db_mutex'
