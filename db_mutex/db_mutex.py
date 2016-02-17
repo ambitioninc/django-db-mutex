@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 
 class db_mutex(object):
-    """0
+    """
     An object that acts as a context manager and a function decorator for acquiring a
     DB mutex lock.
     """
