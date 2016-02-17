@@ -2,7 +2,7 @@ from datetime import datetime
 
 from db_mutex.exceptions import DBMutexError, DBMutexTimeoutError
 from db_mutex.models import DBMutex
-from db_mutex import db_mutex
+from db_mutex.db_mutex import db_mutex
 
 from django.test import TestCase
 from django.test.utils import override_settings
