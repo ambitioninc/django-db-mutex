@@ -6,15 +6,15 @@ from django.conf import settings
 from django.db import transaction, IntegrityError
 from django.utils import timezone
 
-from db_mutex.exceptions import DBMutexError, DBMutexTimeoutError
-from db_mutex.models import DBMutex
+from .exceptions import DBMutexError, DBMutexTimeoutError
+from .models import DBMutex
 
 
 LOG = logging.getLogger(__name__)
 
 
 class db_mutex(object):
-    """
+    """0
     An object that acts as a context manager and a function decorator for acquiring a
     DB mutex lock.
     """
