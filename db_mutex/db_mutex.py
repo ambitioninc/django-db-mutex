@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
- 
+
 from .exceptions import DBMutexError, DBMutexTimeoutError
 from .models import DBMutex
 
@@ -114,16 +114,16 @@ class db_mutex(object):
         Releases the db mutex lock. Throws an error if the lock was released before the function finished.
         """
         ttl_seconds = self.get_mutex_ttl_seconds()
-        
-        try : 
+
+        try:
             dbmutex = DBMutex.objects.get(id=self.lock.id)
             self.lock.delete()
-        except ObjectDoesNotExist: 
+        except ObjectDoesNotExist:
             dbmutex = None
-            
-        if value :
-            return #Any exception takes precedence over DBMutexTimeoutError
-        
+
+        if value:
+            return  # Any exception takes precedence over DBMutexTimeoutError
+
         if not dbmutex or (ttl_seconds and dbmutex.creation_time <= timezone.now() - timedelta(seconds=ttl_seconds)):
             raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
 
