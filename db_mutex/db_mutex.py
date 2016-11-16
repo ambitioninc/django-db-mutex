@@ -26,7 +26,7 @@ class db_mutex(object):
 
         .. code-block:: python
 
-            from db_mutex import db_mutex
+            from db_mutex.db_mutex import db_mutex
 
             # Lock a critical section of code
             try:
