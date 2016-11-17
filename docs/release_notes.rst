@@ -1,6 +1,14 @@
 Release Notes
 =============
 
+v0.3.1
+------
+* Fixed docs
+
+v0.3.0
+------
+* Added django 1.9 support
+
 v0.2.0
 ------
 * Dropped Django 1.6, added 1.8 support
