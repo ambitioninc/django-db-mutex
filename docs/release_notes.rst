@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+v0.4.0
+------
+* Add python 3.5 support, drop django 1.7 support
+
 v0.3.1
 ------
 * Fixed docs
@@ -19,16 +23,13 @@ v0.1.8
 
 v0.1.7
 ------
-
 * Fixed upload to pypi
 
 v0.1.6
 ------
-
 * Updated for Django 1.7 compatibility
 
 v0.1.4
 ------
-
 * This release of django-db-mutex includes docs buildout
 * python 3.3, 3.4 compatibility
