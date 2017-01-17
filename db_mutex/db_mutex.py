@@ -7,7 +7,6 @@ from django.db import transaction, IntegrityError
 from django.utils import timezone
 
 from .exceptions import DBMutexError, DBMutexTimeoutError
-from .models import DBMutex
 
 
 LOG = logging.getLogger(__name__)
@@ -82,6 +81,7 @@ class db_mutex(object):
         """
         Deletes all expired mutex locks if a ttl is provided.
         """
+        from .models import DBMutex
         ttl_seconds = self.get_mutex_ttl_seconds()
         if ttl_seconds is not None:
             DBMutex.objects.filter(creation_time__lte=timezone.now() - timedelta(seconds=ttl_seconds)).delete()
@@ -102,6 +102,7 @@ class db_mutex(object):
         """
         # Delete any expired locks first
         self.delete_expired_locks()
+        from .models import DBMutex
         try:
             with transaction.atomic():
                 self.lock = DBMutex.objects.create(lock_id=self.lock_id)
@@ -112,6 +113,7 @@ class db_mutex(object):
         """
         Releases the db mutex lock. Throws an error if the lock was released before the function finished.
         """
+        from .models import DBMutex
         if not DBMutex.objects.filter(id=self.lock.id).exists():
             raise DBMutexTimeoutError('Lock {0} expired before function completed'.format(self.lock_id))
         else:
