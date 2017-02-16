@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             name='DBMutex',
             fields=[
                 ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('lock_id', models.CharField(unique=True, max_length=256)),
+                ('lock_id', models.CharField(unique=True, max_length=255)),
                 ('creation_time', models.DateTimeField(auto_now_add=True)),
             ],
             options={
