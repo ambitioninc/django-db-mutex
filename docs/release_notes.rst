@@ -1,6 +1,10 @@
 Release Notes
 =============
 
+v0.4.0
+------
+* Fixed docs
+
 v0.3.1
 ------
 * Fixed docs
