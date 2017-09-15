@@ -69,6 +69,8 @@ Django DB Mutex can be used with celery's tasks in the following manner:
 
 .. code-block:: python
 
+    from db_mutex import DBMutexError, DBMutexTimeoutError
+    from db_mutex.db_mutex import db_mutex
     from abc import ABCMeta
     from celery import Task
 
