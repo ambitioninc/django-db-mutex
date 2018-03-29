@@ -1,0 +1,6 @@
+coverage
+django-dynamic-fixture
+django-nose
+freezegun
+mock
+psycopg2
