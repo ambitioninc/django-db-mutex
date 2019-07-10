@@ -1,6 +1,12 @@
 Release Notes
 =============
 
+v1.2.0
+------
+* Python 3.7
+* Django 2.1
+* Django 2.2
+
 v1.1.0
 ------
 * Add tox to support more versions
