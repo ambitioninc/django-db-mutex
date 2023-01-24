@@ -1,5 +1,5 @@
 coverage
-coveralls
+#coveralls
 django-dynamic-fixture
 django-nose
 freezegun
