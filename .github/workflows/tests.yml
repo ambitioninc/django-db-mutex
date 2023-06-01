@@ -53,14 +53,14 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python }}
     - name: Setup
       run: |
         python --version
-        pip install --upgrade pip wheel
+        pip install --upgrade pip wheel setuptools
         pip install -r requirements/requirements.txt
         pip install -r requirements/requirements-testing.txt
         pip install "${{ matrix.django }}"
@@ -69,7 +69,7 @@ jobs:
       env:
         DB_SETTINGS: >-
           {
-            "ENGINE":"django.db.backends.postgresql_psycopg2",
+            "ENGINE":"django.db.backends.postgresql",
             "NAME":"db_mutex",
             "USER":"postgres",
             "PASSWORD":"postgres",
