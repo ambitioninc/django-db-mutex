@@ -37,7 +37,7 @@ jobs:
         - python: '3.7'
           django: 'Django~=4.1.0'
         - python: '3.7'
-          django: 'Django~=4.1.0'
+          django: 'Django~=4.2.0'
     services:
       postgres:
         image: postgres:latest
