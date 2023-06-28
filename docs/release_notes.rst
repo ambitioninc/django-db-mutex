@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v3.1.0
+------
+* Django 4.2
+* Drop django 2
+
 v3.0.0
 ------
 * Django 3.2. 4.0, 4.1
