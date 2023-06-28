@@ -38,7 +38,6 @@ def configure_settings():
             TEST_RUNNER='django_nose.NoseTestSuiteRunner',
             SECRET_KEY='*',
             NOSE_ARGS=['--nocapture', '--nologcapture', '--verbosity=1'],
-            MIDDLEWARE_CLASSES=(),
             DATABASES={
                 'default': db_config,
             },
@@ -46,16 +45,34 @@ def configure_settings():
                 'django.contrib.auth',
                 'django.contrib.contenttypes',
                 'django.contrib.sessions',
+                'django.contrib.messages',
                 'django.contrib.admin',
                 'db_mutex',
                 'db_mutex.tests',
                 'django_nose',
             ),
             DEBUG=False,
+            DEFAULT_AUTO_FIELD='django.db.models.AutoField',
             CACHES={
                 'default': {
                     'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
                     'LOCATION': 'unique-snowflake'
                 }
-            }
+            },
+            MIDDLEWARE = (
+                'django.contrib.auth.middleware.AuthenticationMiddleware',
+                'django.contrib.messages.middleware.MessageMiddleware',
+                'django.contrib.sessions.middleware.SessionMiddleware'
+            ),
+            TEMPLATES = [{
+                'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                'APP_DIRS': True,
+                'OPTIONS': {
+                    'context_processors': [
+                        'django.contrib.auth.context_processors.auth',
+                        'django.contrib.messages.context_processors.messages',
+                        'django.template.context_processors.request',
+                    ]
+                }
+            }],
         )
