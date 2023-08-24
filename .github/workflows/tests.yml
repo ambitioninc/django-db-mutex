@@ -31,13 +31,22 @@ jobs:
 #          # `continue-on-error: true`. Github Actions apparently does not
 #          # have this feature, similar to Travis' allow-failure, yet.
 #          # https://github.com/actions/toolkit/issues/399
+        psycopg:
+          - 'psycopg2==2.9.6'
+          - 'psycopg==3.1.10'
         exclude:
-        - python: '3.7'
-          django: 'Django~=4.0.0'
-        - python: '3.7'
-          django: 'Django~=4.1.0'
-        - python: '3.7'
-          django: 'Django~=4.2.0'
+          - python: '3.7'
+            django: 'Django~=4.0.0'
+          - python: '3.7'
+            django: 'Django~=4.1.0'
+          - python: '3.7'
+            django: 'Django~=4.2.0'
+          - psycopg: 'psycopg==3.1.10'
+            django: 'Django~=3.2.0'
+          - psycopg: 'psycopg==3.1.10'
+            django: 'Django~=4.0.0'
+          - psycopg: 'psycopg==3.1.10'
+            django: 'Django~=4.1.0'
     services:
       postgres:
         image: postgres:latest
