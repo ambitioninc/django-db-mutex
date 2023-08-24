@@ -1,6 +1,11 @@
 Release Notes
 =============
 
+v3.1.1
+------
+* Read the Docs config file v2
+* Github actions for testing psycopg3
+
 v3.1.0
 ------
 * Django 4.2
